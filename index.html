@@ -593,21 +593,30 @@
   var ease='power3.out';
   var S=function(sel){return document.querySelector(sel);};
 
+  // reveal مقاوم: تریگر فقط یک‌بار اجرا می‌شود (once) و بعد از پایان، همهٔ استایل‌های
+  // inline پاک می‌شوند (clearProps) تا هیچ transform باقی‌مانده‌ای چیدمان را به‌هم نریزد.
+  function reveal(targets, vars, trigger, start){
+    if(!targets || (targets.length===0)) return;
+    var v=Object.assign({duration:.8,ease:ease,clearProps:'all'},vars);
+    v.scrollTrigger={trigger:trigger,start:start||'top 82%',once:true};
+    gsap.from(targets,v);
+  }
+
   /* ---- hero (هنگام بارگذاری) ---- */
-  gsap.from('.hero h1, .hero .hero-en, .hero p, .hero-cta',{y:32,opacity:0,duration:.9,stagger:.12,ease:ease,delay:.15});
-  gsap.from('.hstat',{y:24,opacity:0,scale:.9,duration:.6,stagger:.09,ease:'back.out(1.6)',delay:.55});
+  gsap.from('.hero h1, .hero .hero-en, .hero p, .hero-cta',{y:32,opacity:0,duration:.9,stagger:.12,ease:ease,delay:.15,clearProps:'all'});
+  gsap.from('.hstat',{y:24,opacity:0,scale:.9,duration:.6,stagger:.09,ease:'back.out(1.6)',delay:.55,clearProps:'all'});
 
   /* ---- «کانون ارزیابی چیست» — ورود از دو طرف ---- */
   if(S('.whatis')){
-    gsap.from('.whatis .wrap > div:first-child',{x:55,opacity:0,duration:.9,ease:ease,scrollTrigger:{trigger:'.whatis',start:'top 78%'}});
-    gsap.from('.whatis .visual',{x:-55,opacity:0,duration:.9,ease:ease,scrollTrigger:{trigger:'.whatis',start:'top 78%'}});
-    gsap.from('.whatis .compare-row',{y:26,opacity:0,duration:.6,stagger:.15,ease:ease,scrollTrigger:{trigger:'.whatis .visual',start:'top 80%'}});
+    reveal('.whatis .wrap > div:first-child',{x:55,opacity:0,duration:.9},'.whatis','top 78%');
+    reveal('.whatis .visual',{x:-55,opacity:0,duration:.9},'.whatis','top 78%');
+    reveal('.whatis .compare-row',{y:26,opacity:0,duration:.6,stagger:.15},'.whatis .visual','top 80%');
   }
 
   /* ---- بخش لید — ورود از دو طرف ---- */
   if(S('.lead')){
-    gsap.from('.lead .wrap > div:first-child',{x:50,opacity:0,duration:.9,ease:ease,scrollTrigger:{trigger:'.lead',start:'top 80%'}});
-    gsap.from('.lead-form',{x:-50,opacity:0,scale:.97,duration:.9,ease:ease,scrollTrigger:{trigger:'.lead',start:'top 80%'}});
+    reveal('.lead .wrap > div:first-child',{x:50,opacity:0,duration:.9},'.lead','top 80%');
+    reveal('.lead-form',{x:-50,opacity:0,scale:.97,duration:.9},'.lead','top 80%');
   }
 
   /* ---- سرتیترها و بلوک‌های عمومی هر بخش ---- */
@@ -619,9 +628,7 @@
     if(special) return;
     var wrap=sec.querySelector('.wrap'); if(!wrap) return;
     var kids=[].filter.call(wrap.children,function(el){return !el.matches(gridSel);});
-    if(kids.length){
-      gsap.from(kids,{y:42,opacity:0,duration:.75,stagger:.12,ease:ease,scrollTrigger:{trigger:sec,start:'top 82%'}});
-    }
+    reveal(kids,{y:42,opacity:0,duration:.75,stagger:.12},sec);
   });
 
   /* ---- کارت‌های شبکه‌ای — ورود پلکانی ---- */
@@ -630,14 +637,16 @@
    ['.team-grid','.member',{}],
    ['.pay-grid','.pay-card',{scale:.96}]].forEach(function(g){
     var c=S(g[0]); if(!c) return;
-    var base={y:52,opacity:0,duration:.7,stagger:.15,ease:ease,scrollTrigger:{trigger:c,start:'top 84%'}};
-    for(var p in g[2]) base[p]=g[2][p];
-    gsap.from(c.querySelectorAll(g[1]),base);
+    var v={y:52,opacity:0,duration:.7,stagger:.15};
+    for(var p in g[2]) v[p]=g[2][p];
+    reveal(c.querySelectorAll(g[1]),v,c,'top 84%');
   });
 
   /* ---- دکمهٔ شناور تماس ---- */
-  gsap.from('.fab',{scale:0,opacity:0,duration:.5,ease:'back.out(2)',delay:1.1});
+  gsap.from('.fab',{scale:0,opacity:0,duration:.5,ease:'back.out(2)',delay:1.1,clearProps:'all'});
 
+  // بعد از بارگذاری کامل (ویدیوها/عکس‌ها) موقعیت تریگرها را دوباره حساب کن.
+  // چون تریگرها once هستند، تریگرهای اجراشده کشته شده‌اند و این کار چیدمان را خراب نمی‌کند.
   window.addEventListener('load',function(){ScrollTrigger.refresh();});
 })();
 </script>
