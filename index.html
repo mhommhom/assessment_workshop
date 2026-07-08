@@ -89,6 +89,7 @@
   .media-ph:hover .play{transform:scale(1.08);background:var(--gold)}
   .media-ph .play svg{width:24px;height:24px;margin-right:-4px}
   .media-ph .ph-label{font-size:14px;color:#cfdcec;font-weight:500}
+  .media-video{display:block;width:100%;aspect-ratio:16/9;background:#000;object-fit:cover}
   .media-cap{padding:15px 18px;font-weight:700;color:var(--navy);font-size:15px}
   .media-cap span{display:block;font-weight:400;color:var(--grey);font-size:13px;margin-top:3px}
 
@@ -282,21 +283,15 @@
     <div class="wrap">
       <div class="kicker">با دوره آشنا شوید</div>
       <h2 class="sec-title">ببینید در این دوره چه می‌گذرد</h2>
-      <p class="sec-sub">پیش از تصمیم، دوره را از نزدیک بشناسید: ویدئوی معرفی و موشن‌گرافی فرآیند کانون ارزیابی.</p>
+      <p class="sec-sub">پیش از تصمیم، دوره را از نزدیک بشناسید: تیزر و ویدئوی معرفی دورهٔ تربیت ارزیابِ موسسهٔ رسا.</p>
       <div class="media-grid">
         <div class="media-card">
-          <div class="media-ph" data-media="video">
-            <div class="play"><svg viewBox="0 0 24 24" fill="#fff"><path d="M8 5v14l11-7z"/></svg></div>
-            <div class="ph-label">ویدئوی معرفی دوره — به‌زودی</div>
-          </div>
-          <div class="media-cap">ویدئوی معرفی<span>دوره از زبان مدرس و شرکت‌کنندگان پیشین</span></div>
+          <video class="media-video" src="assets/ac_teaser.mp4" controls preload="metadata" playsinline></video>
+          <div class="media-cap">تیزر دوره<span>دوره در یک نگاه</span></div>
         </div>
         <div class="media-card">
-          <div class="media-ph" data-media="motion">
-            <div class="play"><svg viewBox="0 0 24 24" fill="#fff"><path d="M8 5v14l11-7z"/></svg></div>
-            <div class="ph-label">موشن‌گرافی فرآیند — به‌زودی</div>
-          </div>
-          <div class="media-cap">موشن‌گرافی کانون ارزیابی<span>فرآیند ارزیابی شاهدمحور در یک نگاه</span></div>
+          <video class="media-video" src="assets/ac_workshop.mp4" controls preload="metadata" playsinline></video>
+          <div class="media-cap">معرفی دوره<span>آشنایی اجمالی با دوره</span></div>
         </div>
       </div>
     </div>
@@ -530,14 +525,6 @@
     lbtn.textContent='ثبت شد ✓';lbtn.disabled=true;lbtn.style.opacity=.75;
     // === TODO: پس از اتصال، اینجا لینک دانلود بروشور را هم می‌توان مستقیم باز کرد ===
   }
-
-  /* ---- media placeholders ---- */
-  document.querySelectorAll('.media-ph').forEach(function(el){
-    el.addEventListener('click',function(){
-      // === TODO: لینک ویدئو/موشن (آپارات/یوتیوب) را اینجا وصل کنید ===
-      alert('این بخش به‌زودی فعال می‌شود.');
-    });
-  });
 
   /* ---- payment placeholders ---- */
   document.querySelectorAll('.pay-go').forEach(function(el){
